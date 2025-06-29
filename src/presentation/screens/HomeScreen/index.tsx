@@ -1,15 +1,26 @@
-import React, { useState } from "react";
-import { FlatList, Text, TextInput, View } from "react-native";
+import { FlatList, Text, TextInput, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 
-import { styles } from "./styles";
+import { Post } from '@/domain/entities/Post';
+import { PostFactory } from '@/application/factories/postFactory';
+import PostItem from './components/PostItem';
+import { styles } from './styles';
 
 export default function HomeScreen() {
-  const [posts, setPosts] = useState<any[]>([]);
-  const [search, setSearch] = useState("");
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [search, setSearch] = useState('');
 
   const filteredPosts = posts.filter((post) =>
     post.title.toLowerCase().includes(search.toLowerCase()),
   );
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      PostFactory.makeGetPostsUseCase().execute().then(setPosts);
+    };
+
+    fetchPosts();
+  });
 
   return (
     <View style={styles.container}>
@@ -23,7 +34,7 @@ export default function HomeScreen() {
       <FlatList
         data={filteredPosts}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item, index }) => <Text>{index}</Text>}
+        renderItem={({ item }) => <PostItem post={item} />}
       />
     </View>
   );
