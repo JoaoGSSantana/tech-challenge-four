@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, TextInput, View, Text } from "react-native";
+import React, { useState } from "react";
+import { FlatList, Text, TextInput, View } from "react-native";
+
 import { styles } from "./styles";
 
 export default function HomeScreen() {
@@ -7,7 +8,7 @@ export default function HomeScreen() {
   const [search, setSearch] = useState("");
 
   const filteredPosts = posts.filter((post) =>
-    post.title.toLowerCase().includes(search.toLowerCase())
+    post.title.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
